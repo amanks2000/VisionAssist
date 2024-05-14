@@ -57,12 +57,12 @@ export default function Home() {
 
       if (response && response.ok) {
         const data1 = await response.arrayBuffer();
-        setData(data1); 
-        const blob = new Blob([data], { type: "audio/mpeg" });
+        // setData(data1); 
+        const blob = new Blob([data1], { type: "audio/mpeg" });
         const audioUrl1 = URL.createObjectURL(blob);
     
         setAudioUrl(audioUrl1);
-        console.log('audioURL: ', audioUrl, data);
+        // console.log('audioURL: ', audioUrl, data);
         
       } else {
         throw new Error("Failed to fetch audio data");
