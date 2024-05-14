@@ -11,7 +11,7 @@ export interface CreateSoundRequest {
 export default function Home() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
-
+  const [data, setData] = useState<any | null>(null);
   /**
    * Handles the process of fetching audio data using the provided request.
    * @param {CreateSoundRequest} request - The request containing model URL and text.
@@ -35,11 +35,11 @@ export default function Home() {
       let retries = 0;
       const maxRetries = 3;
       let response;
-
+      // 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
       do {
         response = await fetch(modelUrl, {
           headers: {
-            Authorization: `Bearer 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`,
+            Authorization: `Bearer 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`,
             "Content-Type": "application/json",
           },
           method: "POST",
@@ -47,7 +47,7 @@ export default function Home() {
         });
 
         if (response.status === 429) {
-          // If rate limited, wait for a certain amount of time before retrying
+          // If rate limited,2ount of time before retrying
           await new Promise(resolve => setTimeout(resolve, 1000 * (retries + 1)));
           retries++;
         } else {
@@ -56,12 +56,14 @@ export default function Home() {
       } while (retries < maxRetries);
 
       if (response && response.ok) {
-        const data = await response.arrayBuffer();
-  
+        const data1 = await response.arrayBuffer();
+        setData(data1); 
         const blob = new Blob([data], { type: "audio/mpeg" });
-        const audioUrl = URL.createObjectURL(blob);
+        const audioUrl1 = URL.createObjectURL(blob);
     
-        setAudioUrl(audioUrl);
+        setAudioUrl(audioUrl1);
+        console.log('audioURL: ', audioUrl, data);
+        
       } else {
         throw new Error("Failed to fetch audio data");
       }
@@ -71,6 +73,10 @@ export default function Home() {
       setIsLoading(false);
     }
 };
+
+// useEffect(() => {
+//   console.log('audioURL:', audioUrl, data);
+// }, [audioUrl, data]);
 
   
   return (

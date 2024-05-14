@@ -14,7 +14,7 @@ const RES_TO_MODEL: [number[], string][] = [
   [[640, 640], "yolov7-tiny_640x640.onnx"],
 ];
 
-let prevText: any = '';
+let prevText: string = '';
 
 const Yolo = (props: any) => {
   const [modelResolution, setModelResolution] = useState<number[]>(
@@ -183,7 +183,10 @@ const Yolo = (props: any) => {
         text: yoloClasses[cls_id].toString(),
       };
       console.log('calling handleGetAudio');
-      if(soundRequest.text != prevText) {
+      // add conditoin for percentage correction to not convert incorrect detections
+      if(soundRequest.text != prevText && score > 70.0) {
+        console.log('texts: ', soundRequest.text, prevText, score);
+        
         prevText = soundRequest.text;
         props.handleGetAudio(soundRequest);
       }
